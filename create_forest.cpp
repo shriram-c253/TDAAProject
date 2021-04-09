@@ -4,7 +4,7 @@ std::map<int,std::set<int>> create_forest(std::map<int,std::set<int>> edges, int
 	for(std::pair<int,std::set<int>> p: edges)
 	{
 		int degree_of_vertex =  p.second.size();
-		if((p == k) || (p == k-1))
+		if((degree_of_vertex == k) || (degree_of_vertex == k-1))
 			bad_vertices.add(p.first);
 	}
 	for(int bad_vertex: bad_vertices)
@@ -12,7 +12,7 @@ std::map<int,std::set<int>> create_forest(std::map<int,std::set<int>> edges, int
 	for(std::pair<int,std::set<int>> &p: edges)
 	{
 		for(int bad_vertex: bad_vertices)
-			p.erase(bad_vertex);
+			p.second.erase(bad_vertex);
 	}
 	return edges;
 }
