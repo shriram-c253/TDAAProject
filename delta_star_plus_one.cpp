@@ -46,6 +46,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
         good_vertices.insert(to);
       }
     }
+
     int degree_k_vertex_count = (int) bad_vertices.first.size();
     
     int u, v; // these are the vertices to which an edge is added while joining 2 forests
@@ -72,7 +73,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
         // now both from and to are good
         if(d.findParent(from) != d.findParent(to)) {
           // (from, to) forms an edge containing 2 components
-          auto cycle = find_cycle(spanning_tree, from, to);
+          cycle = find_cycle(spanning_tree, from, to);
           for(auto& vertex : cycle) {
             bad_vertices.first.erase(vertex);
             bad_vertices.second.erase(vertex);
@@ -100,14 +101,23 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
       }
     }
     assert(w != -1);
-    if(spanning_tree[u].size() < k - 2 and spanning_tree[v].size() < k - 2) {
-      // then we can simply add the (u, v) and remove vertices adjacent to v from the spanning_tree
-    }
-    else {
+    int w_prev = -1, w_next = -1;
 
+    for(int i = 0; i < cycle.size() - 1; i++) {
+      if(cycle[i] == w) {
+        assert(i != 0);
+        w_prev = cycle[i - 1];
+        w_next = cycle[i + 1];
+      }
     }
+
+    assert(spanning_tree[u].size() <= k - 2 and spanning_tree[v].size() <= k - 2); 
+    // then we can simply add the edge (u, v) and remove vertices adjacent to w from the spanning_tree
+    spanning_tree[w].erase(w_next);
+    spanning_tree[w].erase(w_prev);
+    spanning_tree[w_next].erase(w);
+    spanning_tree[w_prev].erase(w);
+    spanning_tree[u].insert(v);
+    spanning_tree[v].insert(u);
   }
 }
-
-
-
