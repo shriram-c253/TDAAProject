@@ -11,6 +11,7 @@ std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u, i
       }
     } 
   };
+  dfs(u);
   vector<int> cycle;
   int member = v; 
   while(par[member] != -1) {
@@ -114,9 +115,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
     assert(spanning_tree[u].size() <= k - 2 and spanning_tree[v].size() <= k - 2); 
     // then we can simply add the edge (u, v) and remove vertices adjacent to w from the spanning_tree
     spanning_tree[w].erase(w_next);
-    spanning_tree[w].erase(w_prev);
     spanning_tree[w_next].erase(w);
-    spanning_tree[w_prev].erase(w);
     spanning_tree[u].insert(v);
     spanning_tree[v].insert(u);
     // update k for the next round
