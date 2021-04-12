@@ -119,5 +119,10 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
     spanning_tree[w_prev].erase(w);
     spanning_tree[u].insert(v);
     spanning_tree[v].insert(u);
+    // update k for the next round
+    k = 0;
+    for(auto& e : spanning_tree) {
+      k = std::max(k, e.second.size());
+    } 
   }
 }
