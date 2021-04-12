@@ -14,7 +14,7 @@ std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u, i
   dfs(u);
   vector<int> cycle;
   int member = v; 
-  while(par[member] != -1) {
+  while(member != -1) {
     cycle.push_back(member);
     member = par[member];
   }
