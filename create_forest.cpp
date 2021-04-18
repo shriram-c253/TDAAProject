@@ -1,3 +1,5 @@
+#include "create_forest.hpp"
+
 std::pair<std::pair<std::set<int>,std::set<int>>,std::map<int,std::set<int>>> create_forest(std::map<int,std::set<int>> edges, int k)
 {
 	//first member of the pair is the set of bad vertices of degree k, second member is the k-1 set.
@@ -8,15 +10,15 @@ std::pair<std::pair<std::set<int>,std::set<int>>,std::map<int,std::set<int>>> cr
 		if((degree_of_vertex == k) || (degree_of_vertex == k-1))
 		{
 			if(degree_of_vertex == k)
-				sk.add(p.first);
+				sk.insert(p.first);
 			else
-				skminus.add(p.first);
-			bad_vertices.add(p.first);
+				skminus.insert(p.first);
+			bad_vertices.insert(p.first);
 		}
 	}
 	for(int bad_vertex: bad_vertices)
 		edges.erase(bad_vertex);
-	for(std::pair<int,std::set<int>> &p: edges)
+	for(std::pair<int,std::set<int>> p: edges)
 	{
 		for(int bad_vertex: bad_vertices)
 			p.second.erase(bad_vertex);

@@ -1,9 +1,11 @@
+#include "delta_star_plus_one.hpp"
+
 // finds the cycle formed after adding the edge (u, v) in the spanning tree, the vertices returned are in the cycle order (u, v1, v2, ... v)
 std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u, int v) {
   std::vector<int> par((int) spanning_tree.size());
   // we will find a u, v path in the spanning tree (its unique) and we are done
   par[u] = -1;
-  function<void(int)> dfs = [&](int from) {
+  std::function<void(int)> dfs = [&](int from) {
     for(auto& to : spanning_tree[from]) {
       if(par[from] != to) {
         par[to] = from;
@@ -12,7 +14,7 @@ std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u, i
     } 
   };
   dfs(u);
-  vector<int> cycle;
+  std::vector<int> cycle;
   int member = v; 
   while(member != -1) {
     cycle.push_back(member);
@@ -25,20 +27,20 @@ std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u, i
 // makes the vertex w non blocking
 void make_non_blocking(int w, std::map<int, std::set<int>>& spanning_tree, int k, std::map<int, std::pair<int, int>>& cycle_pairs) {
   // base case
-  if(spanning_tree[w].size() <= k - 2) {
+  if((int) spanning_tree[w].size() <= k - 2) {
     return;
   }
   auto [u, v] = cycle_pairs[w];
-  make_non_blocking(u);
-  make_non_blocking(v);
+  make_non_blocking(u, spanning_tree, k, cycle_pairs);
+  make_non_blocking(v, spanning_tree, k, cycle_pairs);
 
-  assert(spanning_tree[u].size() <= k - 2 and spanning_tree[v].size() <= k - 2);
+  assert((int) spanning_tree[u].size() <= k - 2 and (int) spanning_tree[v].size() <= k - 2);
 
-  vector<int> cycle = find_cycle(spanning_tree, u, v);
+  std::vector<int> cycle = find_cycle(spanning_tree, u, v);
   
   int w_prev = -1, w_next = -1;
 
-  for(int i = 0; i < cycle.size() - 1; i++) {
+  for(int i = 0; i < (int) cycle.size() - 1; i++) {
     if(cycle[i] == w) {
       assert(i != 0);
       w_prev = cycle[i - 1];
@@ -63,7 +65,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
   std::map<int, std::set<int>> spanning_tree = get_spanning_tree(graph);
   int k = 0;
   for(auto& e : spanning_tree) {
-    k = std::max(k, e.second.size());
+    k = std::max(k, (int) e.second.size());
   } 
 
   while(true) {
@@ -83,11 +85,11 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
 
     int degree_k_vertex_count = (int) bad_vertices.first.size();
      
-    map<int, pair<int, int>> cycle_pairs; // this stores for every degree k - 1 and degree k vertex, the pair of vertices (u, v)
+    std::map<int, std::pair<int, int>> cycle_pairs; // this stores for every degree k - 1 and degree k vertex, the pair of vertices (u, v)
                                           // where u-v was the edge on adding which the vertex became good
 
     for(auto& e : graph) {
-      if(bad_vertices.first.size() < degree_k_vertex_count) {
+      if((int) bad_vertices.first.size() < degree_k_vertex_count) {
         // we have already found degree k vertex which is good
         break;
       }
@@ -98,18 +100,18 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
       }
       for(auto& to : e.second) {
         // the edges that we consider to add are only between 2 good vertices
-        if(good_vertices.find(to) != good.end()) {
+        if(good_vertices.find(to) != good_vertices.end()) {
           break;
         }
 
         // now both from and to are good
         if(d.findParent(from) != d.findParent(to)) {
           // (from, to) forms an edge containing 2 components
-          cycle = find_cycle(spanning_tree, from, to);
+          std::vector<int> cycle = find_cycle(spanning_tree, from, to);
           for(auto& vertex : cycle) {
             bad_vertices.first.erase(vertex);
             bad_vertices.second.erase(vertex);
-            good_vertices.add(vertex);
+            good_vertices.insert(vertex);
             if(cycle_pairs.find(vertex) == cycle_pairs.end()) {
               cycle_pairs[vertex] = {from, to};  // setting cycle pair for a vertex for which we have already found a cycle pair is wrong.
             }
@@ -123,7 +125,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
         }
       }
     }
-    if(bad_vertices.first.size() == degree_k_vertex_count) {
+    if((int) bad_vertices.first.size() == degree_k_vertex_count) {
       // we could not convert any degree k vertex that can be made good
       return spanning_tree;
     }
@@ -131,7 +133,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
     int w = -1; // represents the vertex on which we want to apply the improvement 
     
     for(auto& vertex : good_vertices) {
-      if(spanning_tree[vertex].size() == k) {
+      if((int) spanning_tree[vertex].size() == k) {
         w = vertex;
         break;
       }
@@ -143,7 +145,7 @@ std::map<int, std::set<int>> delta_star_plus_one(std::map<int, std::set<int>> gr
     // update k for the next round
     k = 0;
     for(auto& e : spanning_tree) {
-      k = std::max(k, e.second.size());
+      k = std::max(k, (int) e.second.size());
     } 
   }
 }

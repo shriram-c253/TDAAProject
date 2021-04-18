@@ -1,9 +1,11 @@
+#include "DisjointSetUnion.hpp"
+
 dsu::dsu() { n = 0; }
 
 dsu::dsu(int n) {
     this->n = n;
     p.resize(n);
-    rank = vector<int>(n, 0);
+    rank = std::vector<int>(n, 0);
 
     for (int i = 0; i < n; i++) {
       p[i] = i;
@@ -43,7 +45,8 @@ void dsu::Union(int i, int j) {
       link(i, j);
 }
 
-  int main() 
+/*
+int main() 
   {
   int n;
   std::cin >> n;
@@ -64,3 +67,4 @@ void dsu::Union(int i, int j) {
 
   std::cout << std::endl;
 }
+*/
