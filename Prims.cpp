@@ -1,21 +1,18 @@
 #include "Prims.hpp"
 
-bool comp::operator()(std::pair<std::pair<int,int>,int> a,std::pair<std::pair<int,int>,int>  b)
+bool comp::operator()(std::pair<int,std::pair<int,int>> a, std::pair<int,std::pair<int,int>> b) 
 {
-    if(a.first.first != b.first.first)
-    return a.first.first > b.first.first;
-
-    return a.first.second > b.first.second;
+    return a.first > b.first;
 }
 
 std::pair<int,std::map<int,std::map<int,int>>> prims(std::map<int,std::map<int,int>> graph,int d_bound,int src)
 {
-    mapped_priority_queue<int,std::pair<int,int>,comp> mpq;
+    std::priority_queue<std::pair<int,std::pair<int,int>>,std::vector<std::pair<int,std::pair<int,int>>>,comp> mpq;
     std::map<int,std::map<int,int>> sp_tree;
 
     for(std::pair<int,int> e:graph[src])
     {
-        mpq.push(e.first,{e.second,src});
+        mpq.push({e.second,{src,e.first}});
     }
 
     int done=1;
@@ -24,30 +21,30 @@ std::pair<int,std::map<int,std::map<int,int>>> prims(std::map<int,std::map<int,i
 
     while(done<n)
     {
+        if(mpq.empty())
+        {
+            std::cout << "Invalid Degree Bound" << std::endl;
+            assert(false);
+        }
         std::pair<int,std::pair<int,int>> curr_v_d = mpq.top();
         mpq.pop();
-        int v = curr_v_d.first,u = curr_v_d.second.second,w = curr_v_d.second.first;
-        if(sp_tree[u].size() >= d_bound) continue;
-        if(sp_tree.find(v)!=sp_tree.end()) continue;
+        int w = curr_v_d.first,v = curr_v_d.second.second,u = curr_v_d.second.first;
+
+        if(sp_tree[u].size() >= d_bound || sp_tree.find(v)!=sp_tree.end())
+        continue;
 
         totcost += w;
         sp_tree[u][v] = w;
         sp_tree[v][u] = w;
-
-        mpq.erase(v);
 
         for(std::pair<int,int> e:graph[v])
         {
             int v1 = e.first;
             int w1 = e.second;
 
-            if(sp_tree.find(v1)!=sp_tree.end()) continue;
-            
-            if(!mpq.present(v1))
-            mpq.push(v1,{w1,v});
+            if(sp_tree.find(v1)!=sp_tree.end()) continue;            
+            mpq.push({w1,{v,v1}});
 
-            else if(w1<mpq[v1].first)
-            mpq.update(v1,{w1,v});
         }
         done++;
     }

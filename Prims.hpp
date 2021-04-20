@@ -4,13 +4,13 @@
 #include<map>
 #include<set>
 #include<utility>
-#include"PriorityQueueUpdate.hpp"
-#include "PriorityQueueUpdate.cpp"
-#define INF 1e18
+#include<queue>
+#include<vector>
+#include<cassert>
 class comp
 {
     public:
-    bool operator()(std::pair<std::pair<int,int>,int> a,std::pair<std::pair<int,int>,int>  b);
+    bool operator()(std::pair<int,std::pair<int,int>> a, std::pair<int,std::pair<int,int>> b);
 };
 std::pair<int,std::map<int,std::map<int,int>>> prims(std::map<int,std::map<int,int>> graph,int d_bound,int src = 0);
 #endif
