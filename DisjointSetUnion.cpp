@@ -44,27 +44,3 @@ void dsu::Union(int i, int j) {
     if (i != j)
       link(i, j);
 }
-
-/*
-int main() 
-  {
-  int n;
-  std::cin >> n;
-  dsu d(n);
-  int m;
-  std::cin >> m;
-  int a, b;
-  for (int i = 0; i < m; i++) {
-    std::cin >> a >> b;
-    a--;
-    b--;
-
-    d.Union(a, b);
-  }
-
-  for (int i = 0; i < n; i++)
-    std::cout << d.findParent(i) + 1 << ' ';
-
-  std::cout << std::endl;
-}
-*/
