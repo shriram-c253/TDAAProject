@@ -1,7 +1,6 @@
 #ifndef KRUSKAL
 #define KRUSKAL
 #include "DisjointSetUnion.hpp"
-#include "DisjointSetUnion.cpp"
 #include<iostream>
 #include<map>
 #include<set>
