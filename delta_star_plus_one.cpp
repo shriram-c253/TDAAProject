@@ -1,4 +1,5 @@
 #include "delta_star_plus_one.hpp"
+using namespace std;
 
 // finds the cycle formed after adding the edge (u, v) in the spanning tree, the
 // vertices returned are in the cycle order (u, v1, v2, ... v)
@@ -73,7 +74,6 @@ delta_star_plus_one(std::map<int, std::set<int>> graph) {
   for (auto &e : spanning_tree) {
     k = std::max(k, (int)e.second.size());
   }
-
   while (true) {
     // get the forest and bad_vertices after removing removing vertices of
     // degree >= k - 1
@@ -89,8 +89,36 @@ delta_star_plus_one(std::map<int, std::set<int>> graph) {
         good_vertices.insert(to);
       }
     }
+    /*
+    cout << "Good vertices : ";
+    for(auto& v : good_vertices) {
+      cout << v << ' ';
+    }
+    cout << endl;
+    cout << "Bad vertices degree k: ";
+    for(auto& v : bad_vertices.first) {
+      cout << v << ' ';
+    }
+    cout << endl;
+    cout << "Bad vertices degree k - 1: ";
+    for(auto& v : bad_vertices.second) {
+      cout << v << ' ';
+    }
+    cout << endl;
+    cout << "k = " << k << endl;
+
+    for(auto& e : forest) {
+      cout << e.first << ' ';
+      for(auto& v : e.second) {
+        cout << v << ' ';
+      }
+      cout << endl;
+    }
+    */
 
     int degree_k_vertex_count = (int)bad_vertices.first.size();
+
+    //cout << degree_k_vertex_count << endl;
 
     std::map<int, std::pair<int, int>>
         cycle_pairs; // this stores for every degree k - 1 and degree k vertex,
@@ -105,14 +133,13 @@ delta_star_plus_one(std::map<int, std::set<int>> graph) {
       int from = e.first;
       // the edges that we consider to add are only between 2 good vertices
       if (good_vertices.find(from) == good_vertices.end()) {
-        break;
+        continue;
       }
       for (auto &to : e.second) {
         // the edges that we consider to add are only between 2 good vertices
-        if (good_vertices.find(to) != good_vertices.end()) {
-          break;
+        if (good_vertices.find(to) == good_vertices.end()) {
+          continue;
         }
-
         // now both from and to are good
         if (d.findParent(from) != d.findParent(to)) {
           // (from, to) forms an edge containing 2 components

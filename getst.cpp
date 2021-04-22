@@ -1,7 +1,4 @@
 #include "getst.hpp"
-#include <iostream>
-
-using namespace std;
 
 std::map<int, std::set<int>>
 get_spanning_tree(std::map<int, std::set<int>> edges) {
@@ -10,14 +7,16 @@ get_spanning_tree(std::map<int, std::set<int>> edges) {
   std::map<int, std::set<int>> spanning_tree;
 
   std::function<void(int)> dfs = [&](int u) {
+    vis[u] = true;
     for (int v : edges[u]) {
       if (!vis[v]) {
         spanning_tree[u].insert(v);
+        spanning_tree[v].insert(u);
         dfs(v);
       }
     }
   };
   dfs(0);
-  cout << spanning_tree.size() << endl;
+  //cout << spanning_tree.size() << endl;
   return spanning_tree;
 }

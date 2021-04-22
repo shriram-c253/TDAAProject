@@ -9,17 +9,26 @@ int main(int argc, char *argv[]) {
   int N;
   fin >> N;
   for (int i = 0; i < N; ++i) {
-    for (int j = i + 1; j < N; ++j) {
+    for (int j = 0; j < N; ++j) {
       int W;
       fin >> W;
       if (W) {
         edges[i].insert(j);
-        edges[j].insert(i);
-        weights[{i, j}] = weights[{j, i}] = W;
+        weights[{i, j}] = W;
       }
     }
   }
   fin.close();
+  //printing the graph
+  /* 
+  for(int i = 0; i < N; i++) {
+    cout << i << " : ";
+    for(auto& v : edges[i]) {
+      cout << v << ' ';
+    } 
+    cout << endl;
+  }
+  */
   std::map<int, std::set<int>> bMST = delta_star_plus_one(edges);
   std::fstream fout("result.txt", std::ios::out);
   int count = 0;
@@ -29,6 +38,6 @@ int main(int argc, char *argv[]) {
       ++count;
     }
   }
-  assert(count == N - 1);
+  assert(count / 2 == N - 1);
   return 0;
 }
