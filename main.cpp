@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
   // takes in file name through commandline
-  std::fstream fin(argv[2], std::ios::in);
+  std::fstream fin(argv[1], std::ios::in);
   std::map<int, std::set<int>> edges;
   std::map<std::pair<int, int>, int> weights;
   int N;

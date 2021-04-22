@@ -1,4 +1,7 @@
 #include "getst.hpp"
+#include <iostream>
+
+using namespace std;
 
 std::map<int, std::set<int>>
 get_spanning_tree(std::map<int, std::set<int>> edges) {
@@ -15,5 +18,6 @@ get_spanning_tree(std::map<int, std::set<int>> edges) {
     }
   };
   dfs(0);
+  cout << spanning_tree.size() << endl;
   return spanning_tree;
 }
