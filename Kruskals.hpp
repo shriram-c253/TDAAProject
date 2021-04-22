@@ -9,5 +9,6 @@
 #include<vector>
 #include<cassert>
 #include<algorithm>
-std::pair<int,std::map<int,std::map<int,int>>> kruskals(std::map<int,std::map<int,int>> graph,int d_bound);
+std::pair<double,std::map<int,std::map<int,double>>> kruskals(std::map<int,std::map<int,double>> graph,int d_bound);
+std::pair<double,std::map<int,std::map<int,double>>> kruskals(std::map<int,std::map<int,double>> graph);
 #endif
