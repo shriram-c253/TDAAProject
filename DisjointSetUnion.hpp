@@ -12,7 +12,8 @@ public:
   dsu(int);
   void add_one();
   int findParent(int);
-  void Union(int,int);
+  void Union(int, int);
+
 private:
   void link(int i, int j);
 };
