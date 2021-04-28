@@ -1,65 +1,68 @@
 #include "delta_star_plus_one.hpp"
-using namespace std;
 
-// finds the cycle formed after adding the edge (u, v) in the spanning tree, the
-// vertices returned are in the cycle order (u, v1, v2, ... v)
-std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u,
-                            int v) {
-  std::vector<int> par((int)spanning_tree.size());
-  // we will find a u, v path in the spanning tree (its unique) and we are done
-  par[u] = -1;
-  std::function<void(int)> dfs = [&](int from) {
-    for (auto &to : spanning_tree[from]) {
-      if (par[from] != to) {
-        par[to] = from;
-        dfs(to);
+namespace bst {
+  // finds the cycle formed after adding the edge (u, v) in the spanning tree, the
+  // vertices returned are in the cycle order (u, v1, v2, ... v)
+  std::vector<int> find_cycle(std::map<int, std::set<int>> spanning_tree, int u,
+                              int v) {
+    std::vector<int> par((int)spanning_tree.size());
+    // we will find a u, v path in the spanning tree (its unique) and we are done
+    par[u] = -1;
+    std::function<void(int)> dfs = [&](int from) {
+      for (auto &to : spanning_tree[from]) {
+        if (par[from] != to) {
+          par[to] = from;
+          dfs(to);
+        }
+      }
+    };
+    dfs(u);
+    std::vector<int> cycle;
+    int member = v;
+    while (member != -1) {
+      cycle.push_back(member);
+      member = par[member];
+    }
+    return cycle;
+  }
+
+  // makes the vertex w non blocking
+  void make_non_blocking(int w, std::map<int, std::set<int>> &spanning_tree,
+                         int k, std::map<int, std::pair<int, int>> &cycle_pairs) {
+    // base case
+    if ((int)spanning_tree[w].size() <= k - 2) {
+      return;
+    }
+    auto [u, v] = cycle_pairs[w];
+    make_non_blocking(u, spanning_tree, k, cycle_pairs);
+    make_non_blocking(v, spanning_tree, k, cycle_pairs);
+
+    assert((int)spanning_tree[u].size() <= k - 2 and
+           (int) spanning_tree[v].size() <= k - 2);
+
+    std::vector<int> cycle = find_cycle(spanning_tree, u, v);
+
+    int w_prev = -1, w_next = -1;
+
+    for (int i = 0; i < (int)cycle.size() - 1; i++) {
+      if (cycle[i] == w) {
+        assert(i != 0);
+        w_prev = cycle[i - 1];
+        w_next = cycle[i + 1];
       }
     }
-  };
-  dfs(u);
-  std::vector<int> cycle;
-  int member = v;
-  while (member != -1) {
-    cycle.push_back(member);
-    member = par[member];
+    assert(w_prev != -1 and w_next != -1);
+
+    // now u, and v have degree <= k - 2 and hence we can add the edge (u, v) and
+    // remove the edge from w to one of w_next, w_prev
+    spanning_tree[u].insert(v);
+    spanning_tree[v].insert(u);
+    spanning_tree[w].erase(w_next);
+    spanning_tree[w_next].erase(w);
   }
-  return cycle;
 }
 
-// makes the vertex w non blocking
-void make_non_blocking(int w, std::map<int, std::set<int>> &spanning_tree,
-                       int k, std::map<int, std::pair<int, int>> &cycle_pairs) {
-  // base case
-  if ((int)spanning_tree[w].size() <= k - 2) {
-    return;
-  }
-  auto [u, v] = cycle_pairs[w];
-  make_non_blocking(u, spanning_tree, k, cycle_pairs);
-  make_non_blocking(v, spanning_tree, k, cycle_pairs);
-
-  assert((int)spanning_tree[u].size() <= k - 2 and
-         (int) spanning_tree[v].size() <= k - 2);
-
-  std::vector<int> cycle = find_cycle(spanning_tree, u, v);
-
-  int w_prev = -1, w_next = -1;
-
-  for (int i = 0; i < (int)cycle.size() - 1; i++) {
-    if (cycle[i] == w) {
-      assert(i != 0);
-      w_prev = cycle[i - 1];
-      w_next = cycle[i + 1];
-    }
-  }
-  assert(w_prev != -1 and w_next != -1);
-
-  // now u, and v have degree <= k - 2 and hence we can add the edge (u, v) and
-  // remove the edge from w to one of w_next, w_prev
-  spanning_tree[u].insert(v);
-  spanning_tree[v].insert(u);
-  spanning_tree[w].erase(w_next);
-  spanning_tree[w_next].erase(w);
-}
+using namespace bst;
 
 /*
  * [Description] : takes as input a graph and returns a spanning tree whose
@@ -159,7 +162,9 @@ delta_star_plus_one(std::map<int, std::set<int>> graph) {
             d.Union(cycle[i], cycle[i + 1]);
           }
           d.Union(to, from);
-          break;
+          if ((int)bad_vertices.first.size() < degree_k_vertex_count) {
+            break;
+          }
         }
       }
     }
