@@ -1,0 +1,127 @@
+
+../wtd/graph9/pert0_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert1_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert2_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert3_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert4_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert5_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert6_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert7_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert8_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert9_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert10_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert11_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert12_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert13_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert14_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert15_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert16_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert17_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert18_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert19_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert20_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert21_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert22_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert23_graph9
+BOUNDED MST
+FAILED!!!
+
+
+../wtd/graph9/pert24_graph9
+BOUNDED MST
+FAILED!!!
+
+
+EXPECTED RATIO = 0
