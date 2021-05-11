@@ -5,7 +5,7 @@ bool comp::operator()(std::pair<double,std::pair<int,int>> a, std::pair<double,s
     return a.first > b.first;
 }
 
-std::pair<double,std::map<int,std::map<int,double>>> prims(std::map<int,std::map<int,double>> graph,int d_bound,int src)
+std::pair<double,std::map<int,std::map<int,double>>>* prims(std::map<int,std::map<int,double>> graph,int d_bound,int src)
 {
     std::priority_queue<std::pair<double,std::pair<int,int>>,std::vector<std::pair<double,std::pair<int,int>>>,comp> mpq;
     std::map<int,std::map<int,double>> sp_tree;
@@ -23,8 +23,9 @@ std::pair<double,std::map<int,std::map<int,double>>> prims(std::map<int,std::map
     {
         if(mpq.empty())
         {
-            std::cout << "Invalid Degree Bound" << std::endl;
-            assert(false);
+            //std::cout << "Invalid Degree Bound" << std::endl;
+            return NULL;
+            //assert(false);
         }
         std::pair<double,std::pair<int,int>> curr_v_d = mpq.top();
         mpq.pop();
@@ -49,7 +50,7 @@ std::pair<double,std::map<int,std::map<int,double>>> prims(std::map<int,std::map
         done++;
     }
 
-    return{totcost,sp_tree};
+    return new std::pair<double,std::map<int,std::map<int,double>>>(totcost,sp_tree);
 }
 
 std::pair<double,std::map<int,std::map<int,double>>> prims(std::map<int,std::map<int,double>> graph)
