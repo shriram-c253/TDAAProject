@@ -2,6 +2,7 @@
 #include "delta_star_plus_one_wtd.hpp"
 #include <fstream>
 #include <cmath>
+#include <chrono>
 #include "Kruskals.hpp"
 #include "Prims.hpp"
 constexpr double eps = 1e-7;
@@ -44,7 +45,10 @@ int main(int argc, char *argv[]) {
     cout << endl;
   }
   */
+ auto start = std::chrono::high_resolution_clock::now();
   std::map<int,std::set<int>> graph = delta_star_plus_one_wtd(edges,weights);
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
   //std::pair<double,std::map<int, std::map<int,double>>>* kruskal_MST = 
   //std::fstream fout("result.txt", std::ios::out);
   // if(kruskal_MST == NULL)
@@ -63,7 +67,7 @@ int main(int argc, char *argv[]) {
     }
     max_degree = std::max(max_degree, (int) i.second.size());
   }
-  std::cout<<max_degree<<" "<<edg_cnt/2;
+  std::cout<<duration.count()/1e9<<" "<<max_degree<<" "<<edg_cnt/2;
   assert(count / 2 == N - 1);
   return 0;
 }

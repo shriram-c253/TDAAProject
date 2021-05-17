@@ -19,14 +19,14 @@ do
         fi
         echo "Running on graph $file"
         num_pert=$((num_pert+1))
-        a1=`date +%s.%N`
+        #a1=`date +%s.%N`
         output=($(./bmst $file))
         declare -p output #is now an array
-        a2=`date +%s.%N`
-        max_d=$(echo $((output[0]>max_d?output[0]:max_d)))
-        avg_edge_cnt=$((avg_edge_cnt+output[1]))
-        time_taken=$(echo "$a2-$a1" | bc -l)
-        running_times+=($time_taken)
+        #a2=`date +%s.%N`
+        max_d=$(echo $((output[1]>max_d?output[1]:max_d)))
+        avg_edge_cnt=$((avg_edge_cnt+output[2]))
+        #time_taken=$(echo "${}" | bc -l)
+        running_times+=(${output[0]})
         #validity=$(echo "$exec_string != -1" | bc -l)
         #echo $validity
         #if [[ $validity == 1 ]] 
