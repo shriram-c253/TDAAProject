@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
           if (ok) {
             _g[i][j] = _g[j][i] = (g[i][j] == 0 ? w : 0);
           } else {
-            _g[i][j] = g[i][j];
+            _g[i][j] = _g[j][i] = g[i][j];
           }
         }
       }
