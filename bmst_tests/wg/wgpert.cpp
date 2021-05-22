@@ -1,7 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(int argc, char *argv[]) {
+
+
+int main(int argc, char *argv[]) 
+{
   int n = stoi(argv[1]);
   double p = stod(argv[2]);
   vector<vector<double>> g(n, vector<double>(n, 0));
@@ -10,15 +13,19 @@ int main(int argc, char *argv[]) {
   default_random_engine gen(
       std ::chrono ::system_clock ::now().time_since_epoch().count());
   double L = dis(gen), R = dis(gen);
-  if (L > R) {
+  if (L > R) 
+  {
     swap(L, R);
   }
   uniform_real_distribution<double> distw(L, R);
-  for (int i = 0; i < n; ++i) {
-    for (int j = i + 1; j < n; ++j) {
+  for (int i = 0; i < n; ++i) 
+  {
+    for (int j = i + 1; j < n; ++j) 
+    {
       double w = distw(gen);
       int yes = dist(gen);
-      if (yes) {
+      if (yes) 
+      {
         g[i][j] = g[j][i] = w;
       }
     }
@@ -26,25 +33,34 @@ int main(int argc, char *argv[]) {
   string name = "orig_" + string(argv[3]);
   fstream fout(name.c_str(), ios::out);
   fout << n << "\n";
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < n; ++j) {
+  for (int i = 0; i < n; ++i) 
+  {
+    for (int j = 0; j < n; ++j) 
+    {
+        assert(g[i][j]==g[j][i]);
       fout << g[i][j] << " \n"[j == n - 1];
     }
   }
   fout.close();
   int N = stoi(argv[4]);
-  for (int _N = 0; _N < N; ++_N) {
+  for (int _N = 0; _N < N; ++_N) 
+  {
     vector<vector<double>> _g(n, vector<double>(n, 0));
-    if (_N % 2) {
+    if (_N % 2) 
+    {
       double _p = 6.0 / N;
       bernoulli_distribution _dist(p);
-      for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
+      for (int i = 0; i < n; ++i) 
+      {
+        for (int j = i + 1; j < n; ++j) 
+        {
           int ok = _dist(gen);
           double w = distw(gen);
-          if (ok) {
+          if (ok) 
+          {
             _g[i][j] = _g[j][i] = (g[i][j] == 0 ? w : 0);
-          } else {
+          } else 
+          {
             _g[i][j] = _g[j][i] = g[i][j];
           }
         }
@@ -55,6 +71,7 @@ int main(int argc, char *argv[]) {
         for (int j = 0; j < n; ++j) {
           if (g[i][j] > 0) {
             _g[i][j] = g[i][j] + distp(gen);
+            _g[i][j] = _g[j][i];
           }
         }
       }
@@ -64,6 +81,7 @@ int main(int argc, char *argv[]) {
     fout << n << "\n";
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
+          assert(_g[i][j]==_g[j][i]);
         fout << _g[i][j] << " \n"[j == n - 1];
       }
     }
