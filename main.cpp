@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
   // takes in file name through commandline
   std::fstream fin(argv[1], std::ios::in);
   std::map<int, std::set<int>> edges;
+  std::map<int,std::map<int,double>> weighted_graph;
   std::map<std::pair<int, int>, double> weights;
   //std::map<int,std::map<int,double>> weighted_edges;
   int N;
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]) {
         edg_cnt++;
         edges[i].insert(j);
         weights[std::make_pair(i,j)] = W;
+        weighted_graph[i][j] = W;
       }
       /*
       int present;
@@ -48,7 +50,7 @@ int main(int argc, char *argv[]) {
  auto start = std::chrono::high_resolution_clock::now();
   std::map<int,std::set<int>> graph = delta_star_plus_one_wtd(edges,weights);
   auto stop = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
+  auto bmst_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
   //std::pair<double,std::map<int, std::map<int,double>>>* kruskal_MST = 
   //std::fstream fout("result.txt", std::ios::out);
   // if(kruskal_MST == NULL)
@@ -56,18 +58,34 @@ int main(int argc, char *argv[]) {
   //   std::cout<<"-1";//invalid tree 
   //   return 0;
   // }
+  start = std::chrono::high_resolution_clock::now();
+  std::pair<double,std::map<int,std::map<int,double>>> k_g  = kruskals(weighted_graph);
+  stop = std::chrono::high_resolution_clock::now();
+  auto kruskal_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
+  start = std::chrono::high_resolution_clock::now();
+  std::pair<double,std::map<int,std::map<int,double>>> p_g = prims(weighted_graph);
+  stop = std::chrono::high_resolution_clock::now();
+  auto prims_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
   int count = 0;
+  double total_weight = 0.0;
   int max_degree = 0;
+  std::pair<int,int> p;
   for (auto i : graph) {
     for (auto j : i.second) {
-      //std::cout << i.first << " " << j << std::endl;
+      //std::cerr << i.first << " " << j << std::endl;
       assert(edges[i.first].find(j) != edges[i.first].end());
+      p.first = i.first;
+      p.second = j;
+      total_weight += weights[p];
       //assert(fabs(weighted_edges[i.first][j.first]-j.second) <= 1e-7);//verifies that the tree is valid.
       ++count;    
     }
     max_degree = std::max(max_degree, (int) i.second.size());
   }
-  std::cout<<duration.count()/1e9<<" "<<max_degree<<" "<<edg_cnt/2;
+  total_weight /= 2.0;
+  //std::cerr<<"Kruskal time = "<<k_g.first<<" Prim time = "<<p_g.first<<'\n';
+  assert(fabs(p_g.first-k_g.first) <= 1e-7);
   assert(count / 2 == N - 1);
+  std::cout<<bmst_time/1e9<<" "<<max_degree<<" "<<edg_cnt/2<<" "<<total_weight<<" "<<kruskal_time<<" "<<prims_time<<" "<<p_g.first;
   return 0;
 }
