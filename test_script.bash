@@ -46,6 +46,7 @@ do
         do
             avg=$(echo "$avg + $x" | bc -l)
         done
+        avg=$(echo "$avg / $total_size" | bc -l)
         std=0
         for x in ${running_times[*]}
         do
@@ -57,8 +58,9 @@ do
         avg_kruskal_time=$(echo "$avg_kruskal_time / $total_size" | bc -l)
         avg_edge_wt=$(echo "$avg_edge_wt / $total_size" | bc -l)
         avg_edge_cnt=$(echo "$avg_edge_cnt / $total_size" | bc -l)
-        result=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$max_d|$avg|$avg_kruskal_time|$avg_prim_time|$avg|$avg_edge_wt|$avg_prim_edge_wt|")
-        
+        #result=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$max_d|$avg|$std|")
+        result=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$max_d|$avg|$std|$avg_kruskal_time|$avg_prim_time|$avg_edge_wt|$avg_prim_edge_wt|")
+        result_array+=($result)
     done
     # if [[ $total_size != 0 ]] 
     # then

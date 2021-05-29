@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   std::map<int, std::set<int>> edges;
   std::map<int,std::map<int,double>> weighted_graph;
   std::map<std::pair<int, int>, double> weights;
-  //std::map<int,std::map<int,double>> weighted_edges;
+  std::map<int,std::map<int,double>> weighted_edges;
   int N;
   fin >> N;
   int edg_cnt = 0;
@@ -21,19 +21,19 @@ int main(int argc, char *argv[]) {
     for (int j = 0; j < N; ++j) {
       double W;
       fin >> W;
-      if (W > eps) {
+      if (W > 0) {
         edg_cnt++;
         edges[i].insert(j);
         weights[std::make_pair(i,j)] = W;
         weighted_graph[i][j] = W;
       }
-      /*
-      int present;
-      fin >> present;
-      if(present == 1)
-      {
-        edges[i].insert(j);//adjacency list.
-      }*/
+      // int present;
+      // fin >> present;
+      // if(present == 1)
+      // {
+      //   edges[i].insert(j);//adjacency list.
+      //   edg_cnt++;
+      // }
     }
   }
   fin.close();
@@ -47,17 +47,10 @@ int main(int argc, char *argv[]) {
     cout << endl;
   }
   */
- auto start = std::chrono::high_resolution_clock::now();
+  auto start = std::chrono::high_resolution_clock::now();
   std::map<int,std::set<int>> graph = delta_star_plus_one_wtd(edges,weights);
   auto stop = std::chrono::high_resolution_clock::now();
   auto bmst_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
-  //std::pair<double,std::map<int, std::map<int,double>>>* kruskal_MST = 
-  //std::fstream fout("result.txt", std::ios::out);
-  // if(kruskal_MST == NULL)
-  // {
-  //   std::cout<<"-1";//invalid tree 
-  //   return 0;
-  // }
   start = std::chrono::high_resolution_clock::now();
   std::pair<double,std::map<int,std::map<int,double>>> k_g  = kruskals(weighted_graph);
   stop = std::chrono::high_resolution_clock::now();
@@ -66,10 +59,24 @@ int main(int argc, char *argv[]) {
   std::pair<double,std::map<int,std::map<int,double>>> p_g = prims(weighted_graph);
   stop = std::chrono::high_resolution_clock::now();
   auto prims_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
+  // auto start = std::chrono::high_resolution_clock::now();
+  // std::map<int,std::set<int>> result = delta_star_plus_one(edges);
+  // auto stop = std::chrono::high_resolution_clock::now();
+  // auto bmst_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
   int count = 0;
   double total_weight = 0.0;
   int max_degree = 0;
   std::pair<int,int> p;
+  // for(auto i: result)
+  // {
+  //   max_degree = std::max(max_degree,(int)result[i.first].size());
+  //   for(int j: i.second)
+  //   {
+  //     assert(edges[i.first].find(j) != edges[i.first].end());
+  //     ++count;
+  //   }
+  // }
+  
   for (auto i : graph) {
     for (auto j : i.second) {
       //std::cerr << i.first << " " << j << std::endl;
@@ -86,6 +93,7 @@ int main(int argc, char *argv[]) {
   //std::cerr<<"Kruskal time = "<<k_g.first<<" Prim time = "<<p_g.first<<'\n';
   assert(fabs(p_g.first-k_g.first) <= 1e-7);
   assert(count / 2 == N - 1);
-  std::cout<<bmst_time/1e9<<" "<<max_degree<<" "<<edg_cnt/2<<" "<<total_weight<<" "<<kruskal_time<<" "<<prims_time<<" "<<p_g.first;
+  //std::cout<<bmst_time/1e9<<" "<<max_degree<<" "<<edg_cnt/2;
+  std::cout<<bmst_time/1e9<<" "<<max_degree<<" "<<edg_cnt/2<<" "<<total_weight<<" "<<kruskal_time/1e9<<" "<<prims_time/1e9<<" "<<p_g.first;
   return 0;
 }
