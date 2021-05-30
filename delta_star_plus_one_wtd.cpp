@@ -33,16 +33,17 @@ namespace bmst
     }
 
     // makes the vertex w non blocking
-    void make_non_blocking(int w, std::map<int, std::set<int>> &spanning_tree, int k, std::map<int, std::pair<int, int>> &cycle_pairs, std::map<std::pair<int, int>, double> &weights)
+    int make_non_blocking(int w, std::map<int, std::set<int>> &spanning_tree, int k, std::map<int, std::pair<int, int>> &cycle_pairs, std::map<std::pair<int, int>, double> &weights)
     {
         // base case
         if ((int)spanning_tree[w].size() <= k - 2)
         {
-            return;
+            return 0;
         }
         auto [u, v] = cycle_pairs[w];
-        make_non_blocking(u, spanning_tree, k, cycle_pairs, weights);
-        make_non_blocking(v, spanning_tree, k, cycle_pairs, weights);
+        int tot = 0;
+        tot += make_non_blocking(u, spanning_tree, k, cycle_pairs, weights);
+        tot += make_non_blocking(v, spanning_tree, k, cycle_pairs, weights);
 
         assert((int)spanning_tree[u].size() <= k - 2 and (int) spanning_tree[v].size() <= k - 2);
 
@@ -73,6 +74,8 @@ namespace bmst
         spanning_tree[v].insert(u);
         spanning_tree[w].erase(w_next);
         spanning_tree[w_next].erase(w);
+
+        return tot + weights[{u,v}]-weights[{w,w_next}];
     }
 }
 
@@ -100,13 +103,22 @@ std::map<int, std::set<int>>* delta_star_plus_one_wtd(std::map<int, std::set<int
     // We return the best graph stored in the history
     std::map<int, std::set<int>> best_st;
     int best_wt = 1e9;
-    bool d_bound_reached = true;
+    bool d_bound_reached = false;
 
     // sorted weights will store the weights and the corresponding vertices in increasing order of edge costs
     std::set<std::pair<double, std::pair<int, int>>> sorted_weights;
     for (auto w : weights)
     {
         sorted_weights.insert({w.second, w.first});
+    }
+
+    int tot_weight = 0;
+    for(auto &adj: spanning_tree)
+    {
+        for(int vertex:adj.second)
+        {
+            tot_weight += weights[{adj.first,vertex}];
+        }
     }
 
     while (true)
@@ -116,22 +128,10 @@ std::map<int, std::set<int>>* delta_star_plus_one_wtd(std::map<int, std::set<int
             d_bound_reached = true;
         }
 
-		if(d_bound_reached == true)
+		if(d_bound_reached == true && tot_weight < best_wt)
 		{
-			int tot_weight = 0;
-			for(auto &adj: spanning_tree)
-			{
-				for(int vertex:adj.second)
-				{
-					tot_weight += weights[{adj.first,vertex}];
-				}
-			}
-
-			if(tot_weight < best_wt)
-			{
-				best_wt = tot_weight;
-				best_st = spanning_tree;
-			}
+			best_wt = tot_weight;
+            best_st = spanning_tree;
 		}
         // get the forest and bad_vertices after removing removing vertices of
         // degree >= k - 1
@@ -255,7 +255,8 @@ std::map<int, std::set<int>>* delta_star_plus_one_wtd(std::map<int, std::set<int
         }
         assert(w != -1);
 
-        make_non_blocking(w, spanning_tree, k, cycle_pairs, weights);
+        int change = make_non_blocking(w, spanning_tree, k, cycle_pairs, weights);
+        tot_weight += change;
 
         // update k for the next round
         k = 0;
