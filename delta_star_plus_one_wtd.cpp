@@ -100,7 +100,7 @@ std::map<int, std::set<int>>* delta_star_plus_one_wtd(std::map<int, std::set<int
     // We return the best graph stored in the history
     std::map<int, std::set<int>> best_st;
     int best_wt = 1e9;
-    bool d_bound_reached = true;
+    bool d_bound_reached = false;
 
     // sorted weights will store the weights and the corresponding vertices in increasing order of edge costs
     std::set<std::pair<double, std::pair<int, int>>> sorted_weights;
