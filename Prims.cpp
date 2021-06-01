@@ -5,7 +5,7 @@ bool comp::operator()(std::pair<double,std::pair<int,int>> a, std::pair<double,s
     return a.first > b.first;
 }
 
-std::pair<double,std::map<int,std::map<int,double>>>* prims(std::map<int,std::map<int,double>> graph,int d_bound,int src)
+std::pair<double,std::map<int,std::map<int,double>>>* bdd_prims(std::map<int,std::map<int,double>> graph,int d_bound,int src)
 {
     std::priority_queue<std::pair<double,std::pair<int,int>>,std::vector<std::pair<double,std::pair<int,int>>>,comp> mpq;
     std::map<int,std::map<int,double>> sp_tree;

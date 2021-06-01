@@ -1,6 +1,7 @@
 make clean
 make
-result_array=()
+time_results=()
+weight_results=()
 for graph_folder in bmst_tests/wg/size*
 do
     folder_name=$(echo $graph_folder | cut --delimiter="/" --fields=3)
@@ -10,13 +11,16 @@ do
         echo "Running on folder $sub_folder"
         g_num=$(echo $sub_folder | cut --delimiter="/" --fields=4)
         g_num=${g_num#"graph"}
-        running_times=()
-        max_d=0 #maximum degree. Take maximum here.
+        running_times3=()
+        running_times4=()
         avg_edge_cnt=0
+        avg_bmst_wt3=0
+        avg_bmst_wt4=0
         avg_kruskal_time=0
+        avg_kruskal_wt=0
         avg_prim_time=0
-        avg_edge_wt=0
-        avg_prim_edge_wt=0
+        avg_prim_wt=0
+        avg_mst_wt=0
         for file in $sub_folder/*
         do
             echo "Running on graph $file"
@@ -24,14 +28,17 @@ do
             output=($(./bmst $file))
             declare -p output #is now an array
             #a2=`date +%s.%N`
-            max_d=$(echo $((output[1]>max_d?output[1]:max_d)))
-            avg_edge_cnt=$((avg_edge_cnt+output[2]))
-            avg_edge_wt=$(echo "$avg_edge_wt + ${output[3]}" | bc -l)
-            avg_prim_edge_wt=$(echo "$avg_prim_edge_wt + ${output[6]}" | bc -l)
-            avg_kruskal_time=$(echo "$avg_kruskal_time + ${output[4]}" | bc -l)
-            avg_prim_time=$(echo "$avg_prim_time + ${output[5]}" | bc -l)
+            avg_edge_cnt=$((avg_edge_cnt+output[4]))
+            avg_bmst_wt3=$(echo "$avg_bmst_wt3 + ${output[1]}" | bc -l)
+            avg_bmst_wt4=$(echo "$avg_bmst_wt4 + ${output[3]}" | bc -l)
+            avg_kruskal_time=$(echo "$avg_kruskal_time + ${output[5]}" | bc -l)
+            avg_kruskal_wt=$(echo "$avg_kruskal_wt + ${output[6]}" | bc -l)
+            avg_prim_time=$(echo "$avg_kruskal_time + ${output[7]}" | bc -l)
+            avg_prim_wt=$(echo "$avg_kruskal_wt + ${output[8]}" | bc -l)
+            avg_mst_wt=$(echo "$avg_mst_wt + ${output[9]}" | bc -l)
             #time_taken=$(echo "${}" | bc -l)
-            running_times+=(${output[0]})
+            running_times3+=(${output[0]})
+            running_times4+=(${output[2]})
             #validity=$(echo "$exec_string != -1" | bc -l)
             #echo $validity
             #if [[ $validity == 1 ]] 
@@ -40,25 +47,43 @@ do
                 #running_times+=($time_taken)
             #fi
         done
-        avg=0
-        total_size=${#running_times[*]}
-        for x in ${running_times[*]}
+        avg_running_time3=0
+        total_size=${#running_times3[*]}
+        for x in ${running_times3[*]}
         do
-            avg=$(echo "$avg + $x" | bc -l)
+            avg_running_time3=$(echo "$avg_running_time3 + $x" | bc -l)
         done
-        std=0
-        for x in ${running_times[*]}
+        std3=0
+        for x in ${running_times3[*]}
         do
-            std=$(echo "$std + ($avg-$x)*($avg-$x)" | bc -l)
+            std3=$(echo "$std3 + ($avg3-$x)*($avg3-$x)" | bc -l)
         done
-        std=$(echo "sqrt($std / $total_size)" | bc -l)
-        avg_prim_edge_wt=$(echo "$avg_prim_edge_wt / $total_size" | bc -l)
-        avg_prim_time=$(echo "$avg_prim_time / $total_size" | bc -l)
-        avg_kruskal_time=$(echo "$avg_kruskal_time / $total_size" | bc -l)
-        avg_edge_wt=$(echo "$avg_edge_wt / $total_size" | bc -l)
+        avg_running_time4=0
+        for x in ${running_times4[*]}
+        do
+            avg_running_time4=$(echo "$avg_running_time4 + $x" | bc -l)
+        done
+        std4=0
+        for x in ${running_times4[*]}
+        do
+            std4=$(echo "$std4 + ($avg4-$x)*($avg4-$x)" | bc -l)
+        done
         avg_edge_cnt=$(echo "$avg_edge_cnt / $total_size" | bc -l)
-        result=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$max_d|$avg|$avg_kruskal_time|$avg_prim_time|$avg|$avg_edge_wt|$avg_prim_edge_wt|")
-        
+        avg_running_time3=$(echo "$avg_running_time3 / $total_size" | bc -l)
+        avg_running_time4=$(echo "$avg_running_time4 / $total_size" | bc -l)
+        std3=$(echo "sqrt($std3 / $total_size)" | bc -l)
+        std4=$(echo "sqrt($std4 / $total_size)" | bc -l)
+        avg_bmst_wt3=$(echo "$avg_bmst_wt3 / $total_size" | bc -l)
+        avg_bmst_wt4=$(echo "$avg_bmst_wt4 / $total_size" | bc -l)
+        avg_kruskal_time=$(echo "$avg_kruskal_time / $total_size" | bc -l)
+        avg_kruskal_wt=$(echo "$avg_kruskal_wt / $total_size" | bc -l)
+        avg_prim_time=$(echo "$avg_prim_time / $total_size" | bc -l)
+        avg_prim_wt=$(echo "$avg_prim_wt / $total_size" | bc -l)
+        avg_mst_wt=$(echo "$avg_mst_wt / $total_size" | bc -l)
+        time_result=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$avg_running_time3|$std3|$avg_running_time4|$std4|$avg_kruskal_time|$avg_prim_time|")
+        wt_res=$(echo "|$vertex_count|$g_num|$avg_edge_cnt|$avg_bmst_wt3|$avg_bmst_wt4|$avg_kruskal_wt|$avg_prim_wt|$avg_mst_wt|")
+        time_results+=($time_result)
+        weight_results+=($wt_res)
     done
     # if [[ $total_size != 0 ]] 
     # then
@@ -77,7 +102,12 @@ do
     #     result_array+=($result)
     # fi
 done
-for res in ${result_array[*]}
+for res in ${time_results[*]}
+do
+    echo $res
+done
+
+for res in ${weight_results[*]}
 do
     echo $res
 done
