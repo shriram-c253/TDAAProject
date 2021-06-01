@@ -271,9 +271,9 @@ Tests were run on Euclidean graphs of varied size and desnity. Each graph had a 
 |1000|3|29642.18750000000000000000|3|.11597380000000000000|.03316181454129508275|
 |1000|4|26766.12500000000000000000|3|.16795229375000000000|.06065281691464820935|
 
-## Comparing the performance of Kruskal's, Prim's and bMST Algorithms on Euclidean Graphs
+## Comparing the performance of Kruskal's, Prim's and bMST Algorithms
 
-A variety of Euclidean Graphs with sizes ranging from 100 to 1000 and of varying density were considered. The performance of the bMST algorithm was compared with the Kruskal's and Prim's algorithms on the basis of total edge weight and execution time. The results are summarized as follows:
+A variety of graphs with sizes ranging from 100 to 1000 and of varying density were considered. The performance of the bMST algorithm was compared with the Kruskal's and Prim's algorithms on the basis of total edge weight and execution time. The results are summarized as follows:
 
 # Runtime
 
