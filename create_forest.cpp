@@ -26,8 +26,8 @@ create_forest(std::map<int, std::set<int>> edges, int k) {
   }
   for (int bad_vertex : bad_vertices)
     edges.erase(bad_vertex);
-  for (auto& p : edges) {
-    for (int bad_vertex : bad_vertices) 
+  for (auto &p : edges) {
+    for (int bad_vertex : bad_vertices)
       p.second.erase(bad_vertex);
   }
   return std::make_pair(std::make_pair(sk, skminus), edges);

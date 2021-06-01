@@ -2,12 +2,10 @@ make clean
 make
 time_results=()
 weight_results=()
-for graph_folder in bmst_tests/wg/size*
-do
+for graph_folder in bmst_tests/wg/size*; do
     folder_name=$(echo $graph_folder | cut --delimiter="/" --fields=3)
-    vertex_count=${folder_name#"size"} 
-    for sub_folder in $graph_folder/*
-    do
+    vertex_count=${folder_name#"size"}
+    for sub_folder in $graph_folder/*; do
         echo "Running on folder $sub_folder"
         g_num=$(echo $sub_folder | cut --delimiter="/" --fields=4)
         g_num=${g_num#"graph"}
@@ -21,14 +19,13 @@ do
         avg_prim_time=0
         avg_prim_wt=0
         avg_mst_wt=0
-        for file in $sub_folder/*
-        do
+        for file in $sub_folder/*; do
             echo "Running on graph $file"
             #a1=`date +%s.%N`
             output=($(./bmst $file))
             declare -p output #is now an array
             #a2=`date +%s.%N`
-            avg_edge_cnt=$((avg_edge_cnt+output[4]))
+            avg_edge_cnt=$((avg_edge_cnt + output[4]))
             avg_bmst_wt3=$(echo "$avg_bmst_wt3 + ${output[1]}" | bc -l)
             avg_bmst_wt4=$(echo "$avg_bmst_wt4 + ${output[3]}" | bc -l)
             avg_kruskal_time=$(echo "$avg_kruskal_time + ${output[5]}" | bc -l)
@@ -41,31 +38,27 @@ do
             running_times4+=(${output[2]})
             #validity=$(echo "$exec_string != -1" | bc -l)
             #echo $validity
-            #if [[ $validity == 1 ]] 
+            #if [[ $validity == 1 ]]
             #then
-                #time_taken=$(echo "$a2-$a1" | bc -l)
-                #running_times+=($time_taken)
+            #time_taken=$(echo "$a2-$a1" | bc -l)
+            #running_times+=($time_taken)
             #fi
         done
         avg_running_time3=0
         total_size=${#running_times3[*]}
-        for x in ${running_times3[*]}
-        do
+        for x in ${running_times3[*]}; do
             avg_running_time3=$(echo "$avg_running_time3 + $x" | bc -l)
         done
         std3=0
-        for x in ${running_times3[*]}
-        do
+        for x in ${running_times3[*]}; do
             std3=$(echo "$std3 + ($avg3-$x)*($avg3-$x)" | bc -l)
         done
         avg_running_time4=0
-        for x in ${running_times4[*]}
-        do
+        for x in ${running_times4[*]}; do
             avg_running_time4=$(echo "$avg_running_time4 + $x" | bc -l)
         done
         std4=0
-        for x in ${running_times4[*]}
-        do
+        for x in ${running_times4[*]}; do
             std4=$(echo "$std4 + ($avg4-$x)*($avg4-$x)" | bc -l)
         done
         avg_edge_cnt=$(echo "$avg_edge_cnt / $total_size" | bc -l)
@@ -85,7 +78,7 @@ do
         time_results+=($time_result)
         weight_results+=($wt_res)
     done
-    # if [[ $total_size != 0 ]] 
+    # if [[ $total_size != 0 ]]
     # then
     #     avg=$(echo "$avg/$total_size" | bc -l)
     #     std=0
@@ -102,12 +95,10 @@ do
     #     result_array+=($result)
     # fi
 done
-for res in ${time_results[*]}
-do
+for res in ${time_results[*]}; do
     echo $res
 done
 
-for res in ${weight_results[*]}
-do
+for res in ${weight_results[*]}; do
     echo $res
 done

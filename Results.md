@@ -1,8 +1,17 @@
 # Results
-This is a document consisting of the results of running the program on various graphs.
+This is a document consisting of the results of running the program on various graph datasets prepared by us. The following are the datasets:
+### `alpha`
+`alpha` is a dataset with weighted and unweighted random graphs. In each weighting category, there are 15 sparse to moderately dense graphs of size 300 nodes with 25 perturbations each.
+### `delta`
+`delta` is a dataset with random Euclidean graphs. It has 35 Euclidean graphs of size varying from 300 to 1000 nodes with 15 perturbations each.
+### `epsilon`
+This is a small dataset with 6 random graphs used for debugging purposes.
+### `omega`
+`omega` is a dataset with weighted and unweighted random graphs. In each weighting category, there are 50 sparse graphs of size varying from 100 to 1000 nodes with varied densities and 15 perturbations each.
 
 ## bMST on Weighted Graphs:
-The program was run on 15 different graphs, with each graph having 15 perturbations including the original graph. The results are summarized as follows:
+This test was performed on the dataset `alpha_weighted`.
+The program was run on 15 different graphs, with each graph having 25 distinct perturbations. The results are summarized as follows:
 
 | Graph      | Average time across Perturbations (in s) | Standard Deviation across Perturbations (in s)     |
 | :---:       |    :----:   |          :---: |
@@ -24,7 +33,8 @@ The program was run on 15 different graphs, with each graph having 15 perturbati
 
 
 ## bMST on Unweighted Graphs
-The program was run on 15 different graphs, with each graph having 15 perturbations including the original graph. The results are summarized as follows:
+This test was performed on the dataset `alpha_unweighted`.
+The program was run on 15 different graphs, with each graph having 25 distinct perturbations. The results are summarized as follows:
 
 | Graph      | Average time across perturbations (in s) | Standard Deviation across Perturbations (in s)     |
 | :---:       |    :----:   |          :---: |
@@ -46,7 +56,8 @@ The program was run on 15 different graphs, with each graph having 15 perturbati
 
 
 ## bMST using Prim's Algorithm
-For this experiment, Prim's algorithm was run on the input graphs and 25 perturbations of them with a varying degree bound. It was observed that for all the input graphs, the minimum degee of the spanning tree was at least 3. The results are as follows:
+This test was performed on the dataset `alpha_weighted`.
+For this experiment, Prim's algorithm was run on the input graphs and their perturbations with a varying degree bound. It was observed that for all the input graphs, the minimum degee of the spanning tree was at least 3. The results are as follows:
 
 ### Degree Bound = 3
 | Graph      | Average time across Perturbations (in s) | Standard Deviation across Perturbations (in s)     | Successful Runs (maximum = 26)
@@ -108,7 +119,7 @@ For this experiment, Prim's algorithm was run on the input graphs and 25 perturb
 |14|.06942700673076923076|.00009190131942056934|26|
 
 ## bMST using Kruskal's algorithm
-
+This test was performed on the dataset `alpha_weighted`.
 Kruskal's algorithm was run on each of the graphs and their perturbations, with a degree bound. It was observed that for all the input graphs, the minimum degee of the spanning tree was at least 3. The results are as follows:
 
 ### Degree Bound = 3
@@ -173,8 +184,9 @@ Kruskal's algorithm was run on each of the graphs and their perturbations, with 
 |14|.07372762400000000000|.00010066524861769592|26|
 
 
-## bMST on Euclidean Graphs
-The algorithm was run across several graphs of varying sizes, from around 50 vertices to nearly 1000 vertices. 15 perturbations of each graph were considered. The results were as follows:
+## bMST on Random Graphs
+This test was performed on the dataset `omega_weighted`.
+The algorithm was run across several graphs of varying sizes and their perturbations. The results were as follows:
 
 |Graph | Number of vertices | Average Edge density across perturbations | Maximum degree across perturbations |Average time across Perturbations (in s) | Standard Deviations across Perturbations (in s)
 | :---: | :---: | :---: | :---: | :--: | :---:|
@@ -214,9 +226,9 @@ The algorithm was run across several graphs of varying sizes, from around 50 ver
 |33|1000|249751.00000000000000000000|2|1.49735562500000000000|.00038212943710937500|
 |34|1000|474330.00000000000000000000|2|3.17096000000000000000|.23947236137500000000|
 
-## Further tests on unweighted euclidean graphs
-
-Tests were run on Euclidean graphs of varied size and desnity. Each graph had a total of 15 perturbations.The results are summarized as follows:
+## Further tests on Unweighted Random graphs
+This test was performed on the dataset `omega_unweighted`.
+Tests were run on Euclidean graphs of varied size and density across their perturbations. The results are summarized as follows:
 
 | Number of Vertices | Graph Number | Average edge density across perturbations | Maximum degree of bMST | Average execution time (in s)| Standard Deviation across perturbations |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -272,8 +284,8 @@ Tests were run on Euclidean graphs of varied size and desnity. Each graph had a 
 |1000|4|26766.12500000000000000000|3|.16795229375000000000|.06065281691464820935|
 
 ## Comparing the performance of Kruskal's, Prim's and bMST Algorithms
-
-A variety of graphs with sizes ranging from 100 to 1000 and of varying density were considered. The performance of the bMST algorithm was compared with the Kruskal's and Prim's algorithms on the basis of total edge weight and execution time. The results are summarized as follows:
+This test was performed on the dataset `omega-weighted`.
+A variety of graphs with varied sizes and varying density were considered along with their perturbations. The performance of the bMST algorithm was compared with the Kruskal's and Prim's algorithms on the basis of total edge weight and execution time. The results are summarized as follows:
 
 # Runtime
 
