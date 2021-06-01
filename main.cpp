@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   }
   */
   auto start = std::chrono::high_resolution_clock::now();
-  std::map<int,std::set<int>> graph = delta_star_plus_one_wtd(edges,weights);
+  std::map<int,std::set<int>>* graph = delta_star_plus_one_wtd(edges,weights,3);
   auto stop = std::chrono::high_resolution_clock::now();
   auto bmst_time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count();
   start = std::chrono::high_resolution_clock::now();
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
   //   }
   // }
   
-  for (auto i : graph) {
+  for (auto i : *graph) {
     for (auto j : i.second) {
       //std::cerr << i.first << " " << j << std::endl;
       assert(edges[i.first].find(j) != edges[i.first].end());
