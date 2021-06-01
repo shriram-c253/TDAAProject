@@ -184,9 +184,9 @@ Kruskal's algorithm was run on each of the graphs and their perturbations, with 
 |14|.07372762400000000000|.00010066524861769592|26|
 
 
-## bMST on Random Graphs
-This test was performed on the dataset `omega_weighted`.
-The algorithm was run across several graphs of varying sizes and their perturbations. The results were as follows:
+## bMST on Euclidean Graphs
+This test was performed on the dataset `delta`.
+The algorithm was run across several Euclidean graphs of varying sizes and their perturbations. The results were as follows:
 
 |Graph | Number of vertices | Average Edge density across perturbations | Maximum degree across perturbations |Average time across Perturbations (in s) | Standard Deviations across Perturbations (in s)
 | :---: | :---: | :---: | :---: | :--: | :---:|
@@ -228,7 +228,7 @@ The algorithm was run across several graphs of varying sizes and their perturbat
 
 ## Further tests on Unweighted Random graphs
 This test was performed on the dataset `omega_unweighted`.
-Tests were run on Euclidean graphs of varied size and density across their perturbations. The results are summarized as follows:
+Tests were run on graphs of varied size and density across their perturbations. The results are summarized as follows:
 
 | Number of Vertices | Graph Number | Average edge density across perturbations | Maximum degree of bMST | Average execution time (in s)| Standard Deviation across perturbations |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -284,7 +284,7 @@ Tests were run on Euclidean graphs of varied size and density across their pertu
 |1000|4|26766.12500000000000000000|3|.16795229375000000000|.06065281691464820935|
 
 ## Comparing the performance of Kruskal's, Prim's and bMST Algorithms
-This test was performed on the dataset `omega-weighted`.
+This test was performed on the dataset `omega_weighted`.
 A variety of graphs with varied sizes and varying density were considered along with their perturbations. The performance of the bMST algorithm was compared with the Kruskal's and Prim's algorithms on the basis of total edge weight and execution time. The results are summarized as follows:
 
 # Runtime
