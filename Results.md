@@ -400,7 +400,7 @@ A variety of graphs with varied sizes and varying density were considered along 
 
 
 #### Coefficient of Variation of Running Time 
-| Number of Vertices | Graph Number | Average number of edges across Perturbations | CV for bMST (b=3) | CV for bMST (b=4) |  CV for Modified Kruskal's (b=4) | Standard deviation for Modified Prim's (b=4) |
+| Number of Vertices | Graph Number | Average number of edges across Perturbations | CV for bMST (b=3) | CV for bMST (b=4) |  CV for Modified Kruskal's (b=4) | CV for Modified Prim's (b=4) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 |100|0|1257.18750000000000000000|.34821192946808211225|.37496387939534082091|.24222894657253752470|.20181484098054853147|
 |100|1|922.81250000000000000000|.17786760864490444793|.23223532326656662098|.25210115737550182758|.21872407485619941467|
