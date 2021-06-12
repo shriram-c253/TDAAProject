@@ -18,4 +18,4 @@ Simply running
 ```
 bash test_script.sh
 ```
-in the creates the required outputs.
+in the code folder creates the required outputs.
