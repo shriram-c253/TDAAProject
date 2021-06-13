@@ -14,5 +14,6 @@ void make_non_blocking(int w, std::map<int, std::set<int>> &spanning_tree,
 } // namespace bmst
 std::map<int, std::set<int>> *
 delta_star_plus_one_wtd(std::map<int, std::set<int>> graph,
-                        std::map<std::pair<int, int>, double> &weights);
+                        std::map<std::pair<int, int>, double> &weights
+                        int d_bound=0);
 #endif
