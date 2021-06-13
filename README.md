@@ -17,6 +17,10 @@ As a part of this project, we have implemented a greedy modification of an [addi
   - `test_script.sh` - This file is used to generate the results of weight and running for the three heuristics on the `omega/omega_weighted` dataset and output them in a format which is usable in markdown.
   - `main.cpp` - This is run the `test_script.sh` file to generate results for a single graph. 
 - The **datasets** folder contains all the datatsets that were used to evaluate the code and generate results.
+  - `alpha` - `alpha` is a dataset with weighted and unweighted random graphs. In each weighting category, there are 15 sparse to moderately dense graphs of size 300 nodes with 25 perturbations each.
+  - `delta` - `delta` is a dataset with random Euclidean graphs. It has 35 Euclidean graphs of size varying from 300 to 1000 nodes with 15 perturbations each.
+  - `epsilon` - This is a small dataset with 6 random graphs used for debugging purposes.
+  - `omega` - `omega` is a dataset with weighted and unweighted random graphs. In each weighting category, there are 50 sparse graphs of size varying from 100 to 1000 nodes with varied densities and 15 perturbations each.
 - The **Results.md** file contains the results of evaluation of the different algorithms on different datasets in tabular format.
 
 ## Running the Code
