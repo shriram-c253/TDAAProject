@@ -201,13 +201,13 @@ delta_star_plus_one_wtd(std::map<int, std::set<int>> graph,
       }
     }
 
-    if ((int)bad_vertices.first.size() == degree_k_vertex_count) {
-      return NULL;
-    }
+    if ((int)bad_vertices.first.size() == degree_k_vertex_count){
+			if(d_bound > 0) return NULL;
+			else return new std::map<int, std::set<int>>(spanning_tree);
+		}
 
     // Heuristic 3 :
-    int w =
-        -1; // represents the vertex on which we want to apply the improvement
+    int w = -1; // represents the vertex on which we want to apply the improvement
             // and we choose the vertex that gives us the maximum benefit
     double max_benefit = 0;
 
